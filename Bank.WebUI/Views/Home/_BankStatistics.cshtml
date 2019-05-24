@@ -1,0 +1,34 @@
+﻿@using Bank.Application.Extensions
+@model Bank.Application.Bank.Queries.GetBankStatistics.BankStatisticsViewModel
+
+<div class="card w-75">
+    <div class="card-header text-center font-weight-bold">Bank statistics</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6 text-right">
+                Total customers:
+            </div>
+            <div class="col-6 text-left">
+                @Model.TotalCustomers
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 text-right">
+                Total accounts:
+            </div>
+            <div class="col-6 text-left">
+                @Model.TotalAccounts
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-6 text-left">
+                Total balance:
+            </div>
+            <div class="col-6 text-right">
+                @Model.TotalBalance.ToSwedishKrona()
+            </div>
+        </div>
+    </div>
+</div>

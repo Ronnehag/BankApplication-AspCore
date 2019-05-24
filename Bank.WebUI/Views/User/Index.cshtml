@@ -1,0 +1,47 @@
+﻿@model Bank.Application.Users.UserViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container pt-3 pb-3">
+    @if (TempData["Message"] != null)
+    {
+        <partial name="_AlertSuccess" />
+    }
+    @if (TempData["Error"] != null)
+    {
+        <partial name="_AlertError" />
+    }
+    <h1 class="text-center pb-5">Bank Users</h1>
+    <table class="table table-sm w-75 offset-2 text-center">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Manage</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.Users)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    @foreach (var claim in user.Claims)
+                    {
+                        <td>@claim.Type</td>
+                    }
+                    <td>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claim-@user.Id">
+                            Change Role
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-@user.Id">
+                            Delete
+                        </button>
+                    </td>
+                    <partial name="_ClaimForm" model="@user" />
+                    <partial name="_DeleteForm" model="@user" />
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

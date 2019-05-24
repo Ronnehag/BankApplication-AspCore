@@ -1,0 +1,42 @@
+﻿@using Bank.Application.Enumerations
+@model  Bank.Application.Users.UserDto
+
+<div class="modal fade" id="claim-@Model.Id" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Role</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Edit" asp-controller="User" method="post">
+                    <input type="hidden" asp-for="Id"/>
+                    <input type="hidden" asp-for="Claims[0].Type"/>
+                    <div class="form-group">
+                        <label asp-for="Email">Email</label>
+                        <input asp-for="Email" class="form-control" readonly="@true"/>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" asp-for="SelectedClaim" value="@Claims.Cashier" checked="@(Model.Claims[0].Type == Claims.Cashier)"> @Claims.Cashier
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" asp-for="SelectedClaim" value="@Claims.Admin" checked="@(Model.Claims[0].Type == Claims.Admin)"> @Claims.Admin
+                            </label>
+                        </div>
+                        <small><span asp-validation-for="SelectedClaim"></span></small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

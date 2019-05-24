@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Customers";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3 text-center">
+            <partial name="_SearchForm" />
+        </div>
+    </div>
+</div>
+
+<div id="loader" style="display: none">
+    <br/>
+    <div style="font-size: 50px;" class="text-center">
+        <i class="fas fa-spinner fa-pulse"></i>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        (function (w, d) {
+            const svg = d.querySelector("#loader");
+            d.querySelector("#searchBtn").addEventListener("click", () => {
+                svg.style.display = svg.style.display === "none" ? "" : "none";
+            });
+        })(window, document);
+    </script>
+}
+

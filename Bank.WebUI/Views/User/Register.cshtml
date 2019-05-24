@@ -1,0 +1,47 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+<div class="container pt-3">
+    <h1>Register User</h1>
+    <div class="row pt-3">
+        <div class="col-6">
+            <form asp-action="Register" asp-controller="User" method="POST" autocomplete="off">
+                <div class="form-group">
+                    <label asp-for="Command.Email"></label>
+                    <input asp-for="Command.Email" class="form-control" autocomplete="nope" placeholder="Email..." />
+                    <span asp-validation-for="Command.Email"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Command.Password"></label>
+                    <input asp-for="Command.Password" class="form-control" autocomplete="nope" placeholder="Password..." />
+                    <span asp-validation-for="Command.Password"></span>
+                </div>
+                <div class="form-group w-50">
+                    <label asp-for="Command.SelectedRole"></label>
+                    <select asp-for="Command.SelectedRole" asp-items="Model.RoleSelect" class="form-control"></select>
+                </div>
+                <div class="form-group text-right">
+                    <button class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+
+        <div class="row">
+            <div class="col-6">
+                <div class="alert alert-success" role="alert">
+                        @TempData["Message"]
+                    </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

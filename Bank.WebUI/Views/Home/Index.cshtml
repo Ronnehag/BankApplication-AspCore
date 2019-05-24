@@ -1,0 +1,25 @@
+﻿@model Bank.Application.Bank.Queries.GetBankStatistics.BankStatisticsViewModel
+
+@{
+    ViewData["Title"] = "BankApplikation | Hem";
+}
+
+<div class="container pt-3">
+    <div class="row">
+        <div class="col-6">
+            <partial name="_BankStatistics" model="Model" />
+        </div>
+        <div class="col-4">
+            <partial name="_SearchByCustomerId" />
+            <div class="row">
+                <div class="col-8">
+                    @if (TempData["Error"] != null)
+                    {
+                        <p>@TempData["Error"]</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿@model Bank.Application.Customers.Queries.GetCustomerList.CustomerListViewModel
+@{
+    ViewData["Title"] = "Search";
+}
+
+@if (!Model.Customers.Any())
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center pt-3">
+                <p class="lead">No customers found matching @Model.Name @Model.City</p>
+                <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-primary text-secondary"><i class="fas fa-backward"></i> Back</a>
+            </div>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="container pt-3">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Street address</th>
+                    <th>Zip code</th>
+                    <th>City</th>
+                    <th>Country</th>
+                    <th>National ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cust in Model.Customers)
+                {
+                    <tr>
+                        <td><a asp-controller="Customer" asp-action="CustomerDetails" asp-route-id="@cust.CustomerId">@cust.CustomerId</a></td>
+                        <td>@cust.GetFullName</td>
+                        <td>@cust.Address.StreetAdress</td>
+                        <td>@cust.Address.ZipCode</td>
+                        <td>@cust.Address.City</td>
+                        <td>@cust.Address.Country</td>
+                        <td>@cust.NationalId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <p>Page: @Model.CurrentPage / @Model.NumberOfPages</p>
+
+
+        <ul class="pagination justify-content-end" style="margin: 20px 0">
+            @if (Model.HasPreviousPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="Customer"
+                       asp-action="Search"
+                       asp-route-name="@Model.Name"
+                       asp-route-city="@Model.City"
+                       asp-route-currentpage="@(Model.CurrentPage - 1)">Previous</a>
+                </li>
+            }
+            @if (Model.CurrentPage > 2)
+            {
+                <li class="page-item @(Model.CurrentPage == 1 ? " active" : "" )">
+                    <a class="page-link"
+                       asp-controller="Customer"
+                       asp-action="Search"
+                       asp-route-name="@Model.Name"
+                       asp-route-city="@Model.City"
+                       asp-route-currentpage="1">First</a>
+                </li>
+            }
+
+            @{
+                var counter = 1;
+                var pageVal = Model.CurrentPage >= 1 ? Model.CurrentPage - 5 : Model.CurrentPage;
+
+            }
+
+            @for (int i = pageVal; i < Model.NumberOfPages + 1; i++)
+            {
+                if(Model.NumberOfPages == 1) { break; }
+                if (counter == 11)
+                {
+                    break;
+                }
+                if (i < 1)
+                {
+                    continue;
+                }
+                <li class="page-item @(Model.CurrentPage == i ? " active" : null)">
+                    <a class="page-link"
+                       asp-controller="Customer"
+                       asp-action="Search"
+                       asp-route-name="@Model.Name"
+                       asp-route-city="@Model.City"
+                       asp-route-currentpage="@i">@i</a>
+                </li>
+                counter++;
+            }
+
+            @if (Model.NumberOfPages > 10)
+            {
+                <li class="page-item @(Model.CurrentPage == Model.NumberOfPages ? " active" : "" )">
+                    <a class="page-link"
+                       asp-controller="Customer"
+                       asp-action="Search"
+                       asp-route-name="@Model.Name"
+                       asp-route-city="@Model.City"
+                       asp-route-currentpage="@(Model.NumberOfPages)">Last</a>
+                </li>
+            }
+            @if (Model.HasMorePages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-controller="Customer"
+                       asp-action="Search"
+                       asp-route-name="@Model.Name"
+                       asp-route-city="@Model.City"
+                       asp-route-currentpage="@(Model.CurrentPage + 1)">Next</a>
+                </li>
+            }
+        </ul>
+
+    </div>
+
+}

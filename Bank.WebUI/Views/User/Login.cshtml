@@ -1,0 +1,23 @@
+﻿@model  Bank.Application.Users.Commands.LoginUser.LoginUserCommand
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h5 class="text-center pt-3">Sign in</h5>
+<div class="row pt-5">
+    <div class="col-4 offset-4">
+        <form asp-controller="User" asp-action="Login" method="post">
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+</div>

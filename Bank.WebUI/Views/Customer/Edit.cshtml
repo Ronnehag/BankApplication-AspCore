@@ -1,0 +1,124 @@
+﻿@model Bank.Application.Customers.Commands.UpdateCustomer.UpdateCustomerCommand
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container pt-3">
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="row text-center">
+            <div class="col-6">
+                <div class="alert alert-success" role="alert">
+                    <span>@TempData["Message"]</span>
+                </div>
+            </div>
+        </div>
+    }
+
+    <h1>Edit customer</h1>
+    <p class="lead">Fields marked with * are required.</p>
+
+
+    <form asp-controller="Customer" asp-action="Edit" method="POST" class="pt-2">
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label asp-for="ProfileData.GivenName"></label> *
+                <input asp-for="ProfileData.GivenName" class="form-control">
+                <small><span asp-validation-for="ProfileData.GivenName"></span></small>
+            </div>
+            <div class="form-group col-md-5">
+                <label asp-for="ProfileData.Surname"></label> *
+                <input asp-for="ProfileData.Surname" class="form-control">
+                <small><span asp-validation-for="ProfileData.Surname"></span></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="ProfileData.Adress.StreetAdress"></label> *
+                <input asp-for="ProfileData.Adress.StreetAdress" class="form-control">
+                <small><span asp-validation-for="ProfileData.Adress.StreetAdress"></span></small>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="ProfileData.Adress.ZipCode"></label> *
+                <input asp-for="ProfileData.Adress.ZipCode" class="form-control">
+                <small><span asp-validation-for="ProfileData.Adress.ZipCode"></span></small>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="ProfileData.Adress.City"></label>  *
+                <input asp-for="ProfileData.Adress.City" class="form-control">
+                <small><span asp-validation-for="ProfileData.Adress.City"></span></small>
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="ProfileData.Adress.CountryCode"></label> *
+                <input asp-for="ProfileData.Adress.CountryCode" class="form-control">
+                <small><span asp-validation-for="ProfileData.Adress.CountryCode"></span></small>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="ProfileData.Adress.Country"></label> *
+                <input asp-for="ProfileData.Adress.Country" class="form-control">
+                <small><span asp-validation-for="ProfileData.Adress.Country"></span></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="ProfileData.EmailAdress"></label>
+                <input asp-for="ProfileData.EmailAdress" class="form-control">
+                <small><span asp-validation-for="ProfileData.EmailAdress"></span></small>
+            </div>
+            <div class="form-group col-md-2">
+                <label asp-for="ProfileData.TelephoneCountryCode"></label>
+                <input asp-for="ProfileData.TelephoneCountryCode" class="form-control">
+                <small><span asp-validation-for="ProfileData.TelephoneCountryCode"></span></small>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="ProfileData.TelephoneNumber"></label>
+                <input asp-for="ProfileData.TelephoneNumber" class="form-control">
+                <small><span asp-validation-for="ProfileData.TelephoneNumber"></span></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label asp-for="ProfileData.Birthday"></label>
+                <input asp-for="ProfileData.Birthday" class="form-control" value="@(Model.ProfileData.Birthday?.Date ?? new DateTime())">
+                <small><span asp-validation-for="ProfileData.Birthday"></span></small>
+            </div>
+            <div class="form-group col-md-5">
+                <label asp-for="ProfileData.NationalId"></label>
+                <input asp-for="ProfileData.NationalId" class="form-control">
+                <small><span asp-validation-for="ProfileData.NationalId"></span></small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="male">Male
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="female">Female
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="other">Other
+                </label>
+            </div>
+            <small><span asp-validation-for="ProfileData.Gender"></span></small>
+        </div>
+
+        <input type="hidden" asp-for="ProfileData.CustomerId" value="@Model.ProfileData.CustomerId" />
+
+        <div class="form-group pt-2">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
+
