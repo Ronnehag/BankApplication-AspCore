@@ -29,3 +29,5 @@ ASP.NET Core 2.2
 Entity Framework Core 2.2
 
 
+### Notes
+The repository lacks commits because I've developed the application using Azure DevOps. This is just an upload to my Github.
