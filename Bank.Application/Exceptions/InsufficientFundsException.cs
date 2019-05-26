@@ -6,7 +6,7 @@ namespace Bank.Application.Exceptions
     {
 
         public InsufficientFundsException(string name, object key)
-            : base($"{name} - ID: ({key}) has insufficient funds.")
+            : base($"{name} #({key}) has insufficient funds.")
         {
         }
     }

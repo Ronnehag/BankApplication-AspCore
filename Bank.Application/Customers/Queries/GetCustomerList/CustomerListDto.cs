@@ -10,7 +10,7 @@ namespace Bank.Application.Customers.Queries.GetCustomerList
         public string City { get; set; }
         public string Country { get; set; }
 
-        public CustomerAdress Address { get; set; }
+        public CustomerAddress Address { get; set; }
         public string NationalId { get; set; }
 
         public string GetFullName => GivenName + " " + Surname;

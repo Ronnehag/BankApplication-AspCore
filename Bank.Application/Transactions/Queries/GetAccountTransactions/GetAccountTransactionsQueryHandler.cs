@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Bank.Application.Extensions;
 using Bank.Application.Interfaces;
+using Bank.Common.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

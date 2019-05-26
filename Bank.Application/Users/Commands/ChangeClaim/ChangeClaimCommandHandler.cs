@@ -39,7 +39,7 @@ namespace Bank.Application.Users.Commands.ChangeClaim
                 var addClaim = await _userManager.AddClaimAsync(user, new Claim(request.NewClaim, "true"));
                 if (addClaim.Succeeded)
                 {
-                    return new BaseResult { IsSuccess = true };
+                    return new BaseResult { IsSuccess = true, Success = $"Successfully changed role from {request.CurrentClaim} to {request.NewClaim} for user {user.Email}" };
                 }
             }
             return new BaseResult { IsSuccess = false, Error = "An error occured while removing the current claim." };

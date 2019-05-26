@@ -6,50 +6,39 @@ using Bank.Application.Customers.Queries.GetCustomerDetails;
 using Bank.Application.Customers.Queries.GetCustomerList;
 using Bank.Application.Enumerations;
 using Bank.Application.Exceptions;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebUI.Controllers
 {
     [Authorize(Policy = Claims.Cashier)]
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public CustomerController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         public IActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
         public async Task<IActionResult> Search(GetCustomerListQuery query)
         {
             query.Offset = query.Limit * (query.CurrentPage - 1);
-            return View(await _mediator.Send(query));
+            return View(await Mediator.Send(query));
         }
 
-        [HttpGet]
         public async Task<IActionResult> CustomerDetails(int id)
         {
             try
             {
-                return View(await _mediator.Send(new GetCustomerDetailsQuery { CustomerId = id }));
+                return View(await Mediator.Send(new GetCustomerDetailsQuery { CustomerId = id }));
             }
             catch (NotFoundException)
             {
-                TempData["Error"] = $"Customer with ID {id} not found.";
+                TempData["Error"] = $"Customer ID {id} not found.";
             }
 
             return RedirectToAction(nameof(Index), "Home");
         }
 
-        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -61,34 +50,27 @@ namespace Bank.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var success = await _mediator.Send(query);
-                if (success)
+                var result = await Mediator.Send(query);
+                if (result.IsSuccess)
                 {
-                    TempData["Message"] = "Successfully registred customer";
+                    TempData["Message"] = result.Success;
                     return RedirectToAction(nameof(Register));
                 }
-
-                TempData["Error"] = "An error occured while registrering the customer, try again shortly.";
-
+                TempData["Error"] = result.Error;
             }
             return View(query);
         }
-
 
         public async Task<IActionResult> Edit(int id)
         {
             try
             {
-                var customer = await _mediator.Send(new GetCustomerQuery { CustomerId = id });
-                var command = new UpdateCustomerCommand
-                {
-                    ProfileData = customer
-                };
-                return View(command);
+                var customer = await Mediator.Send(new GetCustomerQuery { CustomerId = id });
+                return View(new UpdateCustomerCommand { Profile = customer });
             }
-            catch (NotFoundException)
+            catch (NotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
             }
         }
 
@@ -100,13 +82,17 @@ namespace Bank.WebUI.Controllers
             {
                 try
                 {
-                    var customer = await _mediator.Send(command);
-                    TempData["Message"] = "Successfully updated the customers profile.";
-                    return RedirectToAction(nameof(Edit), new { id = customer.ProfileData.CustomerId });
+                    var result = await Mediator.Send(command);
+                    if (result.IsSuccess)
+                    {
+                        TempData["Message"] = result.Success;
+                    }
+
+                    return RedirectToAction(nameof(CustomerDetails), new { id = command.Profile.CustomerId });
                 }
-                catch (NotFoundException)
+                catch (NotFoundException ex)
                 {
-                    return NotFound();
+                    return NotFound(ex.Message);
                 }
             }
             return View(command);

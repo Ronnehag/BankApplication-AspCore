@@ -7,7 +7,6 @@ namespace Bank.Application.Customers.Queries.GetCustomer
     {
         public int CustomerId { get; set; }
 
-        [Required]
         [Display(Name = "First name")]
         public string GivenName { get; set; }
 
@@ -17,22 +16,23 @@ namespace Bank.Application.Customers.Queries.GetCustomer
         [Display(Name = "National ID")]
         public string NationalId { get; set; }
 
-        [DataType(DataType.DateTime)]
+        [Display(Name = "Birthday")]
         public DateTime? Birthday { get; set; }
 
         [Display(Name = "Phone number")]
+        [DataType(DataType.PhoneNumber)]
         public string TelephoneNumber { get; set; }
         
         [Display(Name = "Phone country code")]
         public string TelephoneCountryCode { get; set; }
         
         [Display(Name = "Email adress")]
+        [DataType(DataType.EmailAddress)]
         public string EmailAdress { get; set; }
 
-        public CustomerAdress Adress { get; set; }
-
-        [Required]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
+
+        public CustomerAddress Address { get; set; }
     }
 }

@@ -5,23 +5,14 @@ using Bank.Application.Accounts.Commands.CreateAccountTransfer;
 using Bank.Application.Accounts.Queries.GetAccountDetails;
 using Bank.Application.Enumerations;
 using Bank.Application.Exceptions;
-using Bank.Application.Extensions;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebUI.Controllers
 {
     [Authorize(Policy = Claims.Cashier)]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public AccountController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deposit([FromForm]CreateAccountDepositCommand command)
@@ -30,7 +21,7 @@ namespace Bank.WebUI.Controllers
             {
                 try
                 {
-                    var result = await _mediator.Send(command);
+                    var result = await Mediator.Send(command);
                     TempData["Message"] = result.Success;
                 }
                 catch (NotFoundException ex)
@@ -55,7 +46,7 @@ namespace Bank.WebUI.Controllers
             {
                 try
                 {
-                    var result = await _mediator.Send(command);
+                    var result = await Mediator.Send(command);
                     TempData["Message"] = result.Success;
                 }
                 catch (NotFoundException ex)
@@ -84,7 +75,7 @@ namespace Bank.WebUI.Controllers
             {
                 try
                 {
-                    var result = await _mediator.Send(command);
+                    var result = await Mediator.Send(command);
                     TempData["Message"] = result.Success;
                 }
                 catch (NotFoundException ex)
@@ -109,7 +100,7 @@ namespace Bank.WebUI.Controllers
         {
             try
             {
-                return View(await _mediator.Send(new GetAccountDetailQuery { AccountId = id }));
+                return View(await Mediator.Send(new GetAccountDetailQuery { AccountId = id }));
             }
             catch (NotFoundException)
             {

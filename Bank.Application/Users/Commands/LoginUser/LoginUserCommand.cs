@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Bank.Application.Interfaces;
 using MediatR;
 
 namespace Bank.Application.Users.Commands.LoginUser
 {
-    public class LoginUserCommand : IRequest<LoginUserResult>
+    public class LoginUserCommand : IRequest<IResult>
     {
         [Required]
         [DataType(DataType.EmailAddress)]

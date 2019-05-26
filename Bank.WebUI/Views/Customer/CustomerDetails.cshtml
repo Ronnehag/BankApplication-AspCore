@@ -1,22 +1,40 @@
-﻿@using Bank.Application.Extensions
+﻿@using Bank.Common.Extensions
 @model Bank.Application.Customers.Queries.GetCustomerDetails.CustomerDto
 @{
-    ViewData["Title"] = "Kundbild";
+    ViewData["Title"] = "Customer details";
 }
 
 <div class="container pb-3 pt-3">
+
+    @if (TempData["Message"] != null)
+    {
+        <partial name="_AlertSuccess" />
+    }
+
     <div class="row">
         <div class="col-4">
-            <h5 class="pb-1">Customer Profile</h5>
+            <h5 class="pb-1"><i class="far fa-user"></i> Profile</h5>
             <address>
-                <strong><i class="fas fa-id-card-alt"></i> ID: @Model.CustomerId | @Model.FullName</strong><br>
-                @Model.Adress.StreetAdress<br>
-                @Model.Adress.ZipCode @Model.Adress.City, @Model.Adress.Country.ToUpper()<br>
+                <strong><i class="fas fa-id-card-alt"></i> #@Model.CustomerId @Model.FullName</strong><br>
+                @Model.Address.StreetAdress<br>
+                @Model.Address.ZipCode @Model.Address.City, @Model.Address.Country<br>
                 <abbr title="Phone">Phone:</abbr> @Model.WritePhoneNumber
             </address>
             <p>
-                <i class="fas fa-birthday-cake"></i> Birthday: @Model.PrintBirthday()<br/>
-                <i class="fas fa-flag"></i> National ID: @Model.NationalId<br/>
+                <i class="fas fa-birthday-cake"></i> Birthday: @Model.PrintBirthday()<br />
+                <i class="fas fa-flag"></i> National ID: @Model.NationalId<br />
+                @switch (Model.Gender)
+                {
+                    case "Male":
+                        <i class="fas fa-mars"></i> @Model.Gender
+                        break;
+                    case "Female":
+                        <i class="fas fa-venus"></i> @Model.Gender
+                        break;
+                    default:
+                        <span>>Gender:@Model.Gender</span>
+                        break;
+                }
             </p>
             <address>
                 <i class="fas fa-envelope"></i> <a href="mailto:@Model.EmailAdress">@Model.EmailAdress</a>
@@ -25,15 +43,14 @@
         @if (Model.Cards.Any())
         {
             <div class="col-6">
-                <h5 class="pb-1">Customer Cards</h5>
+                <h5 class="pb-1"><i class="far fa-credit-card"></i> Credit Cards</h5>
                 @foreach (var card in Model.Cards)
                 {
                     <p>
-                        Type: @card.Type <br/>
-                        Number: @card.CcNumber <br/>
-                        Card Type: @card.CcType <br/>
-                        Expiration : @card.ExpM/@card.ExpY<br/>
-                        Issued: @card.Issued.Date <br/>
+                        @card.CcType @card.Type <br />
+                        @card.CcNumber <br />
+                        Issued: @card.Issued.Date.ToString("yyy-MM-dd") <br />
+                        Expiration: @card.ExpM/@card.ExpY<br />
                     </p>
                 }
             </div>

@@ -1,7 +1,7 @@
 ﻿@using Bank.Application.Accounts.Commands.CreateAccountCredit
 @using Bank.Application.Accounts.Commands.CreateAccountDebit
 @using Bank.Application.Accounts.Commands.CreateAccountTransfer
-@using Bank.Application.Extensions
+@using Bank.Common.Extensions
 @model Bank.Application.Accounts.Queries.GetAccountDetails.AccountDetailDto
 @{
     ViewData["Title"] = "Account Details";
@@ -155,14 +155,12 @@
                 const maxLimit = 20;
                 let currentOffset = 0;
                 let hasMorePages;
-                const accountId = @Model.AccountId;
                 const tableBody = $("#transactions tbody");
                 const showMoreBtn = $("#transactionBtn");
+                const accountId = @Model.AccountId;
 
-                fetchTransactions(accountId, maxLimit, currentOffset);
-
-                async function fetchTransactions(id, limit, offset) {
-                    const res = await fetch(`/api/accounts/${id}/limit=${limit}/offset=${offset}`);
+                async function fetchTransactions(limit, offset) {
+                    const res = await fetch(`/api/accounts/${accountId}/limit=${limit}/offset=${offset}`);
                     const data = await res.json();
                     hasMorePages = data.hasMorePages;
                     appendTransactions(data);
@@ -182,13 +180,12 @@
                 }
 
                 showMoreBtn.click(function() {
+                    if (!hasMorePages) this.disabled = true;
                     currentOffset += 20;
-                    fetchTransactions(accountId, maxLimit, currentOffset);
-                    if (!hasMorePages) {
-                        this.disabled = true;
-                    }
+                    fetchTransactions(maxLimit, currentOffset);
                 });
-
+                // Initial Fetch of 20 transactions when site loads
+                fetchTransactions(maxLimit, currentOffset);
             })();
         });
     </script>

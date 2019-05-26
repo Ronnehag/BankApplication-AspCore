@@ -3,22 +3,14 @@ using System.Threading.Tasks;
 using Bank.Application.Bank.Queries.GetBankStatistics;
 using Microsoft.AspNetCore.Mvc;
 using Bank.WebUI.Models;
-using MediatR;
 
 namespace Bank.WebUI.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public HomeController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         public async Task<IActionResult> Index()
         {
-            return View(await _mediator.Send(new GetBankStatisticsQuery()));
+            return View(await Mediator.Send(new GetBankStatisticsQuery()));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

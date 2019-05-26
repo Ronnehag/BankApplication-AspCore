@@ -1,12 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Bank.Application.Exceptions;
+using Bank.Application.Interfaces;
+using Bank.Application.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace Bank.Application.Users.Commands.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginUserResult>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IResult>
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
@@ -17,7 +19,7 @@ namespace Bank.Application.Users.Commands.LoginUser
             _userManager = userManager;
         }
 
-        public async Task<LoginUserResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -27,10 +29,9 @@ namespace Bank.Application.Users.Commands.LoginUser
             var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, false);
             if (result.Succeeded)
             {
-                return new LoginUserResult { IsSuccess = true };
+                return new BaseResult { IsSuccess = true };
             }
-
-            return new LoginUserResult { IsSuccess = false };
+            return new BaseResult { IsSuccess = false, Error = "Password incorrect" };
         }
     }
 }

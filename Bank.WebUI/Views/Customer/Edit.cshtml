@@ -4,120 +4,108 @@
 }
 
 <div class="container pt-3">
-
-    @if (TempData["Message"] != null)
-    {
-        <div class="row text-center">
-            <div class="col-6">
-                <div class="alert alert-success" role="alert">
-                    <span>@TempData["Message"]</span>
-                </div>
-            </div>
-        </div>
-    }
-
-    <h1>Edit customer</h1>
+    <h1>Edit customer @Model.Profile.GivenName @Model.Profile.Surname</h1>
     <p class="lead">Fields marked with * are required.</p>
-
-
     <form asp-controller="Customer" asp-action="Edit" method="POST" class="pt-2">
         <div class="form-row">
             <div class="form-group col-md-5">
-                <label asp-for="ProfileData.GivenName"></label> *
-                <input asp-for="ProfileData.GivenName" class="form-control">
-                <small><span asp-validation-for="ProfileData.GivenName"></span></small>
+                <label asp-for="Profile.GivenName"></label> *
+                <input asp-for="Profile.GivenName" class="form-control">
+                <small><span asp-validation-for="Profile.GivenName"></span></small>
             </div>
             <div class="form-group col-md-5">
-                <label asp-for="ProfileData.Surname"></label> *
-                <input asp-for="ProfileData.Surname" class="form-control">
-                <small><span asp-validation-for="ProfileData.Surname"></span></small>
+                <label asp-for="Profile.Surname"></label> *
+                <input asp-for="Profile.Surname" class="form-control">
+                <small><span asp-validation-for="Profile.Surname"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label asp-for="ProfileData.Adress.StreetAdress"></label> *
-                <input asp-for="ProfileData.Adress.StreetAdress" class="form-control">
-                <small><span asp-validation-for="ProfileData.Adress.StreetAdress"></span></small>
+                <label asp-for="Profile.Address.StreetAdress"></label> *
+                <input asp-for="Profile.Address.StreetAdress" class="form-control">
+                <small><span asp-validation-for="Profile.Address.StreetAdress"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="ProfileData.Adress.ZipCode"></label> *
-                <input asp-for="ProfileData.Adress.ZipCode" class="form-control">
-                <small><span asp-validation-for="ProfileData.Adress.ZipCode"></span></small>
+                <label asp-for="Profile.Address.ZipCode"></label> *
+                <input asp-for="Profile.Address.ZipCode" class="form-control">
+                <small><span asp-validation-for="Profile.Address.ZipCode"></span></small>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label asp-for="ProfileData.Adress.City"></label>  *
-                <input asp-for="ProfileData.Adress.City" class="form-control">
-                <small><span asp-validation-for="ProfileData.Adress.City"></span></small>
+                <label asp-for="Profile.Address.City"></label>  *
+                <input asp-for="Profile.Address.City" class="form-control">
+                <small><span asp-validation-for="Profile.Address.City"></span></small>
             </div>
             <div class="form-group col-md-2">
-                <label asp-for="ProfileData.Adress.CountryCode"></label> *
-                <input asp-for="ProfileData.Adress.CountryCode" class="form-control">
-                <small><span asp-validation-for="ProfileData.Adress.CountryCode"></span></small>
+                <label asp-for="Profile.Address.CountryCode"></label> *
+                <input asp-for="Profile.Address.CountryCode" class="form-control">
+                <small><span asp-validation-for="Profile.Address.CountryCode"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="ProfileData.Adress.Country"></label> *
-                <input asp-for="ProfileData.Adress.Country" class="form-control">
-                <small><span asp-validation-for="ProfileData.Adress.Country"></span></small>
+                <label asp-for="Profile.Address.Country"></label> *
+                <input asp-for="Profile.Address.Country" class="form-control">
+                <small><span asp-validation-for="Profile.Address.Country"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label asp-for="ProfileData.EmailAdress"></label>
-                <input asp-for="ProfileData.EmailAdress" class="form-control">
-                <small><span asp-validation-for="ProfileData.EmailAdress"></span></small>
+                <label asp-for="Profile.EmailAdress"></label>
+                <input asp-for="Profile.EmailAdress" class="form-control">
+                <small><span asp-validation-for="Profile.EmailAdress"></span></small>
             </div>
             <div class="form-group col-md-2">
-                <label asp-for="ProfileData.TelephoneCountryCode"></label>
-                <input asp-for="ProfileData.TelephoneCountryCode" class="form-control">
-                <small><span asp-validation-for="ProfileData.TelephoneCountryCode"></span></small>
+                <label asp-for="Profile.TelephoneCountryCode"></label>
+                <input asp-for="Profile.TelephoneCountryCode" class="form-control">
+                <small><span asp-validation-for="Profile.TelephoneCountryCode"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="ProfileData.TelephoneNumber"></label>
-                <input asp-for="ProfileData.TelephoneNumber" class="form-control">
-                <small><span asp-validation-for="ProfileData.TelephoneNumber"></span></small>
+                <label asp-for="Profile.TelephoneNumber"></label>
+                <input asp-for="Profile.TelephoneNumber" class="form-control">
+                <small><span asp-validation-for="Profile.TelephoneNumber"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-5">
-                <label asp-for="ProfileData.Birthday"></label>
-                <input asp-for="ProfileData.Birthday" class="form-control" value="@(Model.ProfileData.Birthday?.Date ?? new DateTime())">
-                <small><span asp-validation-for="ProfileData.Birthday"></span></small>
+                <label asp-for="Profile.Birthday"></label>
+                <input asp-for="Profile.Birthday" type="text" class="form-control date-picker" value="@Model.Profile.Birthday?.ToString("yyyy-MM-dd")">
+                <small><span asp-validation-for="Profile.Birthday"></span></small>
             </div>
             <div class="form-group col-md-5">
-                <label asp-for="ProfileData.NationalId"></label>
-                <input asp-for="ProfileData.NationalId" class="form-control">
-                <small><span asp-validation-for="ProfileData.NationalId"></span></small>
+                <label asp-for="Profile.NationalId"></label>
+                <input asp-for="Profile.NationalId" class="form-control">
+                <small><span asp-validation-for="Profile.NationalId"></span></small>
             </div>
         </div>
 
         <div class="form-group">
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="male">Male
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="male">Male
                 </label>
             </div>
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="female">Female
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="female">Female
                 </label>
             </div>
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="ProfileData.Gender" value="other">Other
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="other">Other
                 </label>
             </div>
-            <small><span asp-validation-for="ProfileData.Gender"></span></small>
+            <br/>
+            <small><span asp-validation-for="Profile.Gender"></span></small>
         </div>
 
-        <input type="hidden" asp-for="ProfileData.CustomerId" value="@Model.ProfileData.CustomerId" />
+        <input type="hidden" asp-for="Profile.CustomerId" value="@Model.Profile.CustomerId" />
 
         <div class="form-group pt-2">
             <button type="submit" class="btn btn-primary">Update</button>
+            <a class="btn btn-secondary" asp-controller="Customer" asp-action="CustomerDetails" asp-route-id="@Model.Profile.CustomerId">Return to profile</a>
         </div>
     </form>
 </div>

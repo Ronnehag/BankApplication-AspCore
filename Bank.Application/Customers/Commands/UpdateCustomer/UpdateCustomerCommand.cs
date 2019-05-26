@@ -1,10 +1,11 @@
 ﻿using Bank.Application.Customers.Queries.GetCustomer;
+using Bank.Application.Interfaces;
 using MediatR;
 
 namespace Bank.Application.Customers.Commands.UpdateCustomer
 {
-    public class UpdateCustomerCommand : IRequest<UpdateCustomerCommand>
+    public class UpdateCustomerCommand : IRequest<IResult>
     {
-        public CustomerProfile ProfileData { get; set; }
+        public CustomerProfile Profile { get; set; }
     }
 }

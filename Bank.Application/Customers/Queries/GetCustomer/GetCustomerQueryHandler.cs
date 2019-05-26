@@ -45,7 +45,7 @@ namespace Bank.Application.Customers.Queries.GetCustomer
                 GivenName = customer.Givenname,
                 Birthday = customer.Birthday,
                 Gender = customer.Gender,
-                Adress = new CustomerAdress
+                Address = new CustomerAddress
                 {
                     CountryCode = customer.CountryCode,
                     Country = customer.Country,

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Text;
 using Bank.Application.Bank.Queries.GetBankStatistics;
+using Bank.Application.Customers.Commands.CreateCustomer;
 using Bank.Application.Enumerations;
 using Bank.Application.Interfaces;
 using Bank.Common;
 using Bank.Infrastructure;
 using Bank.Persistence;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -88,8 +90,9 @@ namespace Bank.WebUI
             {
                 options.AddPolicy("Admin", policyBuilder =>
                     policyBuilder.RequireClaim(Claims.Admin, "true"));
-                options.AddPolicy("Cashier",
-                    policyBuilder => policyBuilder.RequireClaim(Claims.Cashier, "true"));
+
+                options.AddPolicy("Cashier", policyBuilder =>
+                    policyBuilder.RequireClaim(Claims.Cashier, "true"));
             });
 
             // Adding Authentication using Core Identity default authentication as well as JwtBearers scheme for the API-controller
@@ -116,7 +119,9 @@ namespace Bank.WebUI
                 opt.AccessDeniedPath = "/User/Denied";
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommand>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -139,15 +144,6 @@ namespace Bank.WebUI
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "customer_details",
-                    template: "customer/{id:int?}",
-                    defaults: new
-                    {
-                        controller = "Customer",
-                        action = "Index",
-                    });
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

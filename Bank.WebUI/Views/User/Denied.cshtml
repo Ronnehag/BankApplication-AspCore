@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Unauthorized";
+}
+
+
+<div class="container pt-5 text-center">
+    <h3 class="text-danger">@Context.Response.StatusCode - Unauthorized: Access is denied due to invalid credentials.</h3>
+    <h6>You do not have permission to view this directory or page using the credentials you supplied.</h6>
+    <br /><br />
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">Return</a>
+</div>
+
+

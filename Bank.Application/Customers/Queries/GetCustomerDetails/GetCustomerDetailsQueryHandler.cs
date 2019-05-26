@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Bank.Application.Accounts.Queries.GetCustomerAccounts;
-using Bank.Application.Cards;
 using Bank.Application.Cards.Queries;
 using Bank.Application.Exceptions;
 using Bank.Application.Interfaces;
@@ -51,7 +49,8 @@ namespace Bank.Application.Customers.Queries.GetCustomerDetails
                 TelephoneCountryCode = customer.Telephonecountrycode,
                 TelephoneNumber = customer.Telephonenumber,
                 NationalId = customer.NationalId,
-                Adress = new CustomerAdress
+                Gender = customer.Gender,
+                Address = new CustomerAddress
                 {
                     Country = customer.Country,
                     City = customer.City,

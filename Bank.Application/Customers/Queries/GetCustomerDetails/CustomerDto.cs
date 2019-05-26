@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Bank.Application.Accounts.Queries.GetCustomerAccounts;
 using Bank.Application.Cards;
-using Bank.Application.Extensions;
+using Bank.Common.Extensions;
 
 namespace Bank.Application.Customers.Queries.GetCustomerDetails
 {
     public class CustomerDto
     {
+        private string _gender;
         public int CustomerId { get; set; }
         public string FullName => GivenName + " " + Surname;
         public string WritePhoneNumber => $"({TelephoneCountryCode}) {TelephoneNumber}";
@@ -19,7 +20,16 @@ namespace Bank.Application.Customers.Queries.GetCustomerDetails
         public string TelephoneNumber { get; set; }
         public string TelephoneCountryCode { get; set; }
         public string EmailAdress { get; set; }
-        public CustomerAdress Adress { get; set; }
+
+
+
+        public string Gender
+        {
+            get => _gender.ToFirstLetterUpper();
+            set => _gender = value;
+        }
+
+        public CustomerAddress Address { get; set; }
 
         public string PrintBirthday()
         {

@@ -11,11 +11,11 @@
 
     @if (TempData["Message"] != null)
     {
-        <partial name="_AlertSuccess"/>
+        <partial name="_AlertSuccess" />
     }
     @if (TempData["Error"] != null)
     {
-        <partial name="_AlertError"/>
+        <partial name="_AlertError" />
     }
 
     <h1>Register new customer</h1>
@@ -25,75 +25,75 @@
     <form asp-controller="Customer" asp-action="Register" method="POST" class="pt-2">
         <div class="form-row">
             <div class="form-group col-md-5">
-                <label asp-for="GivenName"></label> *
-                <input asp-for="GivenName" class="form-control">
-                <small><span asp-validation-for="GivenName"></span></small>
+                <label asp-for="Profile.GivenName"></label> *
+                <input asp-for="Profile.GivenName" class="form-control">
+                <small><span asp-validation-for="Profile.GivenName"></span></small>
             </div>
             <div class="form-group col-md-5">
-                <label asp-for="Surname"></label> *
-                <input asp-for="Surname" class="form-control">
-                <small><span asp-validation-for="Surname"></span></small>
+                <label asp-for="Profile.Surname"></label> *
+                <input asp-for="Profile.Surname" class="form-control">
+                <small><span asp-validation-for="Profile.Surname"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label asp-for="Streetadress"></label> *
-                <input asp-for="Streetadress" class="form-control">
-                <small><span asp-validation-for="Streetadress"></span></small>
+                <label asp-for="Profile.Address.StreetAdress"></label> *
+                <input asp-for="Profile.Address.StreetAdress" class="form-control">
+                <small><span asp-validation-for="Profile.Address.StreetAdress"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="Zipcode"></label> *
-                <input asp-for="Zipcode" class="form-control">
-                <small><span asp-validation-for="Zipcode"></span></small>
+                <label asp-for="Profile.Address.ZipCode"></label> *
+                <input asp-for="Profile.Address.ZipCode" class="form-control">
+                <small><span asp-validation-for="Profile.Address.ZipCode"></span></small>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label asp-for="City"></label> *
-                <input asp-for="City" class="form-control">
-                <small><span asp-validation-for="City"></span></small>
+                <label asp-for="Profile.Address.City"></label> *
+                <input asp-for="Profile.Address.City" class="form-control">
+                <small><span asp-validation-for="Profile.Address.City"></span></small>
             </div>
             <div class="form-group col-md-2">
-                <label asp-for="CountryCode"></label> *
-                <input asp-for="CountryCode" class="form-control">
-                <small><span asp-validation-for="CountryCode"></span></small>
+                <label asp-for="Profile.Address.CountryCode"></label> *
+                <input asp-for="Profile.Address.CountryCode" class="form-control">
+                <small><span asp-validation-for="Profile.Address.CountryCode"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="Country"></label> *
-                <input asp-for="Country" class="form-control">
-                <small><span asp-validation-for="Country"></span></small>
+                <label asp-for="Profile.Address.Country"></label> *
+                <input asp-for="Profile.Address.Country" class="form-control">
+                <small><span asp-validation-for="Profile.Address.Country"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-4">
-                <label asp-for="EmailAdress"></label>
-                <input asp-for="EmailAdress" class="form-control">
-                <small><span asp-validation-for="EmailAdress"></span></small>
+                <label asp-for="Profile.EmailAdress"></label>
+                <input asp-for="Profile.EmailAdress" class="form-control">
+                <small><span asp-validation-for="Profile.EmailAdress"></span></small>
             </div>
             <div class="form-group col-md-2">
-                <label asp-for="TelephoneCountryCode"></label>
-                <input asp-for="TelephoneCountryCode" class="form-control">
-                <small><span asp-validation-for="TelephoneCountryCode"></span></small>
+                <label asp-for="Profile.TelephoneCountryCode"></label>
+                <input asp-for="Profile.TelephoneCountryCode" class="form-control">
+                <small><span asp-validation-for="Profile.TelephoneCountryCode"></span></small>
             </div>
             <div class="form-group col-md-4">
-                <label asp-for="TelephoneNumber"></label>
-                <input asp-for="TelephoneNumber" class="form-control">
-                <small><span asp-validation-for="TelephoneNumber"></span></small>
+                <label asp-for="Profile.TelephoneNumber"></label>
+                <input asp-for="Profile.TelephoneNumber" class="form-control">
+                <small><span asp-validation-for="Profile.TelephoneNumber"></span></small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-md-5">
-                <label asp-for="Birthday"></label>
-                <input asp-for="Birthday" class="form-control">
-                <small><span asp-validation-for="Birthday"></span></small>
+                <label asp-for="Profile.Birthday"></label>
+                <input asp-for="Profile.Birthday" type="text" class="form-control date-picker">
+                <small><span asp-validation-for="Profile.Birthday"></span></small>
             </div>
             <div class="form-group col-md-5">
-                <label asp-for="NationalId"></label>
-                <input asp-for="NationalId" class="form-control">
-                <small><span asp-validation-for="NationalId"></span></small>
+                <label asp-for="Profile.NationalId"></label>
+                <input asp-for="Profile.NationalId" class="form-control">
+                <small><span asp-validation-for="Profile.NationalId"></span></small>
             </div>
         </div>
 
@@ -104,20 +104,21 @@
         <div class="form-group">
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="Gender" value="male">Male
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="male">Male
                 </label>
             </div>
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="Gender" value="female">Female
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="female">Female
                 </label>
             </div>
             <div class="form-check-inline">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" asp-for="Gender" value="other">Other
+                    <input type="radio" class="form-check-input" asp-for="Profile.Gender" value="other">Other
                 </label>
             </div>
-            <small><span asp-validation-for="Gender"></span></small>
+            <br />
+            <small><span asp-validation-for="Profile.Gender"></span></small>
         </div>
 
         <div class="form-group pt-2">
@@ -126,3 +127,13 @@
     </form>
 </div>
 
+@section scripts
+{
+    <script>
+        $('.date-picker').datepicker({
+            language: "sv",
+            autoclose: "true",
+            format: "yyyy-mm-dd",
+        });
+    </script>
+}

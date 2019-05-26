@@ -57,7 +57,7 @@ body {
 
 
 
-field-validation-error {
+.field-validation-error {
     color: #f00;
 }
 

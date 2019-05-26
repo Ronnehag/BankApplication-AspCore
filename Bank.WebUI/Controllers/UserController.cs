@@ -5,29 +5,24 @@ using Bank.Application.Exceptions;
 using Bank.Application.Users;
 using Bank.Application.Users.Commands.ChangeClaim;
 using Bank.Application.Users.Commands.DeleteUser;
+using Bank.Application.Users.Commands.EditUser;
 using Bank.Application.Users.Commands.LoginUser;
 using Bank.Application.Users.Commands.LogoutUser;
 using Bank.Application.Users.Queries.GetUserList;
 using Bank.WebUI.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bank.WebUI.Controllers
 {
-    public class UserController : Controller
+    [Authorize]
+    public class UserController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public UserController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
         [Authorize(Policy = Claims.Admin)]
         public async Task<IActionResult> Index()
         {
-            return View(await _mediator.Send(new GetUserListQuery()));
+            return View(await Mediator.Send(new GetUserListQuery()));
         }
 
         [AllowAnonymous]
@@ -45,31 +40,33 @@ namespace Bank.WebUI.Controllers
             {
                 try
                 {
-                    await _mediator.Send(userCommand);
-                    return RedirectToAction("Index", "Home");
+                    var result = await Mediator.Send(userCommand);
+                    if (result.IsSuccess)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError(nameof(userCommand.Password), result.Error);
                 }
                 catch (NotFoundException)
                 {
-                    //TODO
+                    ModelState.AddModelError(nameof(userCommand.Email), "Email not found");
                 }
             }
             return View(userCommand);
         }
 
         [HttpPost]
-        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _mediator.Send(new LogOutUserCommand());
+            await Mediator.Send(new LogOutUserCommand());
             return Redirect("/");
         }
 
         [Authorize(Policy = Claims.Admin)]
         public IActionResult Register()
         {
-            var vm = new RegisterViewModel();
-            return View(vm);
+            return View(new RegisterViewModel());
         }
 
         [HttpPost]
@@ -79,7 +76,7 @@ namespace Bank.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _mediator.Send(model.Command);
+                var result = await Mediator.Send(model.Command);
                 if (result.IsSuccess)
                 {
                     TempData["Message"] = $"Successfully created the user {model.Command.Email}";
@@ -90,13 +87,6 @@ namespace Bank.WebUI.Controllers
             return View(model);
         }
 
-
-        [AllowAnonymous]
-        public IActionResult Denied()
-        {
-            return Challenge();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = Claims.Admin)]
@@ -104,7 +94,7 @@ namespace Bank.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _mediator.Send(new ChangeClaimCommand
+                var result = await Mediator.Send(new ChangeClaimCommand
                 {
                     NewClaim = model.SelectedClaim,
                     UserId = model.Id,
@@ -112,8 +102,7 @@ namespace Bank.WebUI.Controllers
                 });
                 if (result.IsSuccess)
                 {
-                    TempData["ClaimMessage"] =
-                        $"Successfully changed role from {model.CurrentClaim} to {model.SelectedClaim} for user {model.Email}";
+                    TempData["ClaimMessage"] = result.Success;
                 }
                 else
                 {
@@ -123,14 +112,14 @@ namespace Bank.WebUI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromForm] UserDto model)
+        [Authorize(Policy = Claims.Admin)]
+        public async Task<IActionResult> Update([FromForm] EditUserCommand command)
         {
             if (ModelState.IsValid)
             {
-                var result = await _mediator.Send(new DeleteUserCommand { UserId = model.Id, UserName = User.Identity.Name });
+                var result = await Mediator.Send(command);
                 if (result.IsSuccess)
                 {
                     TempData["Message"] = result.Success;
@@ -140,8 +129,35 @@ namespace Bank.WebUI.Controllers
                     TempData["Error"] = result.Error;
                 }
             }
-
             return RedirectToAction(nameof(Index));
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Policy = Claims.Admin)]
+        public async Task<IActionResult> Delete([FromForm] UserDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await Mediator.Send(new DeleteUserCommand { UserId = model.Id, UserName = User.Identity.Name });
+                if (result.IsSuccess)
+                {
+                    TempData["Message"] = result.Success;
+                }
+                else
+                {
+                    TempData["Error"] = result.Error;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [AllowAnonymous]
+        public IActionResult Denied()
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return View();
         }
     }
 }

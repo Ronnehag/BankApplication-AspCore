@@ -1,4 +1,6 @@
-﻿@model Bank.Application.Users.UserViewModel
+﻿@using Bank.Application.Enumerations
+@using Bank.Application.Users.Commands.EditUser
+@model Bank.Application.Users.UserViewModel
 @{
     ViewData["Title"] = "Users";
 }
@@ -24,22 +26,35 @@
         <tbody>
             @foreach (var user in Model.Users)
             {
-                <tr>
+                <tr class="text-left">
                     <td>@user.Email</td>
                     @foreach (var claim in user.Claims)
                     {
                         <td>@claim.Type</td>
                     }
                     <td>
-                        <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claim-@user.Id">
-                            Change Role
-                        </button>
-                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-@user.Id">
-                            Delete
-                        </button>
+                        @if (User.Identity.Name != user.Email && User.HasClaim(Claims.Admin, "true"))
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claim-@user.Id">
+                                Change Role
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#edit-@user.Id">
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-@user.Id">
+                                Delete
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#edit-@user.Id">
+                                Edit
+                            </button>
+                        }
                     </td>
                     <partial name="_ClaimForm" model="@user" />
                     <partial name="_DeleteForm" model="@user" />
+                    <partial name="_UserEditForm" model="@(new EditUserCommand{Email = user.Email, UserId = user.Id})" />
                 </tr>
             }
         </tbody>

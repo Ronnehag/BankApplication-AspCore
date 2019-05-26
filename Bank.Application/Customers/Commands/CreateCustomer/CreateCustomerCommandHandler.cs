@@ -3,13 +3,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Bank.Application.Enumerations;
 using Bank.Application.Interfaces;
+using Bank.Application.Models;
 using Bank.Common;
+using Bank.Common.Extensions;
 using Bank.Domain.Entities;
 using MediatR;
 
 namespace Bank.Application.Customers.Commands.CreateCustomer
 {
-    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, bool>
+    public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, IResult>
     {
         private readonly IBankDbContext _context;
         private readonly IDateTime _time;
@@ -20,28 +22,28 @@ namespace Bank.Application.Customers.Commands.CreateCustomer
             _time = time;
         }
 
-        public async Task<bool> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<IResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = new Customer
             {
-                Givenname = request.GivenName,
-                Surname = request.Surname,
-                Gender = request.Gender,
-                City = request.City.ToUpperInvariant(),
-                Country = request.Country,
-                Streetaddress = request.Streetadress,
-                Emailaddress = request.EmailAdress,
-                CountryCode = request.CountryCode,
-                Zipcode = request.Zipcode,
-                Birthday = request.Birthday,
-                NationalId = request.NationalId,
-                Telephonecountrycode = request.TelephoneCountryCode,
-                Telephonenumber = request.TelephoneNumber
+                Givenname = request.Profile.GivenName.ToFirstLetterUpper(),
+                Surname = request.Profile.Surname.ToFirstLetterUpper(),
+                Gender = request.Profile.Gender,
+                City = request.Profile.Address.City.ToUpperInvariant(),
+                Country = request.Profile.Address.Country.ToFirstLetterUpper(),
+                Streetaddress = request.Profile.Address.StreetAdress.ToFirstLetterUpper(),
+                Emailaddress = request.Profile.EmailAdress.ToFirstLetterUpper(),
+                CountryCode = request.Profile.Address.CountryCode.ToUpperInvariant(),
+                Zipcode = request.Profile.Address.ZipCode,
+                Birthday = request.Profile.Birthday,
+                NationalId = request.Profile.NationalId,
+                Telephonecountrycode = request.Profile.TelephoneCountryCode,
+                Telephonenumber = request.Profile.TelephoneNumber
             };
 
             var account = new Account
             {
-                Balance = 0,
+                Balance = 0m,
                 Created = _time.Now,
                 Frequency = AccountFrequency.Monthly
             };
@@ -59,7 +61,11 @@ namespace Bank.Application.Customers.Commands.CreateCustomer
 
             _context.Dispositions.Add(disposition);
             var result = await _context.SaveChangesAsync(cancellationToken);
-            return result == 1;
+            if (result == 1)
+            {
+                return new BaseResult { IsSuccess = true, Success = "Successfully registred customer" };
+            }
+            return new BaseResult { IsSuccess = false, Success = "An error occured while registrering the customer, try again shortly." };
         }
     }
 }

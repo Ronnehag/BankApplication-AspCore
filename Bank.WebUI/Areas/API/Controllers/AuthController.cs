@@ -10,9 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Bank.WebUI.Areas.API.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IConfiguration _configuration;
 
@@ -22,7 +21,7 @@ namespace Bank.WebUI.Areas.API.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody]LoginUserCommand user)
+        public IActionResult Login([FromBody] LoginUserCommand user)
         {
             if (user == null)
             {

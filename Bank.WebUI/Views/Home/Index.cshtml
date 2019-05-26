@@ -12,10 +12,10 @@
         <div class="col-4">
             <partial name="_SearchByCustomerId" />
             <div class="row">
-                <div class="col-8">
+                <div class="col-12">
                     @if (TempData["Error"] != null)
                     {
-                        <p>@TempData["Error"]</p>
+                        <p class="text-danger">@TempData["Error"]</p>
                     }
                 </div>
             </div>

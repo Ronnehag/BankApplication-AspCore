@@ -96,7 +96,7 @@ namespace Bank.Application.Customers.Queries.GetCustomerList
                     Surname = c.Surname,
                     GivenName = c.Givenname,
                     NationalId = c.NationalId,
-                    Address = new CustomerAdress
+                    Address = new CustomerAddress
                     {
                         City = c.City,
                         StreetAdress = c.Streetaddress,

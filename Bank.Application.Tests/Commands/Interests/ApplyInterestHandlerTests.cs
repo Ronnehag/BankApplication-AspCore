@@ -8,11 +8,23 @@ using Bank.Application.Tests.Infrastructure;
 using Shouldly;
 using Xunit;
 
+
 namespace Bank.Application.Tests.Commands.Interests
 {
     [Collection("Savings Interests")]
     public class ApplyInterestHandlerTests
     {
+        /* Calculation Used, Example:
+        * Balance: 10000
+        * Interest: 5%
+        * Days a year: 360
+        * Timespan: 60 days
+        *
+        * (10000 * (5 / 100) / 360) * 60 + 10000
+        * Rounded to 2 decimals.
+        * Answer: 10083.33
+        */
+
         [Fact(DisplayName = "Interest_ApplyInterest_CalculatedCorrectly")]
         public async Task Loan_ApplyInterest_CalculatedCorrectly()
         {
