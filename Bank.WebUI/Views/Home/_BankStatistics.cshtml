@@ -2,7 +2,7 @@
 @model Bank.Application.Bank.Queries.GetBankStatistics.BankStatisticsViewModel
 
 <div class="card w-75">
-    <div class="card-header text-center font-weight-bold">Bank statistics</div>
+    <div class="card-header text-center list-group-item-primary">Bank statistics</div>
     <div class="card-body">
         <div class="row">
             <div class="col-6 text-right">
@@ -21,12 +21,12 @@
             </div>
         </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer list-group-item-primary">
         <div class="row">
             <div class="col-6 text-left">
                 Total balance:
             </div>
-            <div class="col-6 text-right">
+            <div class="col-6 text-right font-weight-bold">
                 @Model.TotalBalance.ToSwedishKrona()
             </div>
         </div>

@@ -34,7 +34,7 @@ namespace Bank.WebUI.Controllers
                 }
                 return RedirectToAction(nameof(Details), new { id = command.AccountId });
             }
-            TempData["Error"] = "That amount is too large or too low to be deposited.";
+            TempData["Error"] = "You entered an invalid amount. Amount can't be zero, negative or over 13 digits.";
             return RedirectToAction(nameof(Details), new { id = command.AccountId });
         }
 
@@ -63,7 +63,7 @@ namespace Bank.WebUI.Controllers
                 }
                 return RedirectToAction(nameof(Details), new { id = command.AccountId });
             }
-            TempData["Error"] = "That amount is too large or too low to be debited.";
+            TempData["Error"] = "You entered an invalid amount. Amount can't be zero, negative or over 13 digits.";
             return RedirectToAction(nameof(Details), new { id = command.AccountId });
         }
 
@@ -92,7 +92,7 @@ namespace Bank.WebUI.Controllers
                 }
                 return RedirectToAction(nameof(Details), new { id = command.AccountIdFrom });
             }
-            TempData["Error"] = "That amount is too large or too low to be transfered.";
+            TempData["Error"] = "You entered an invalid amount. Amount can't be zero, negative or over 13 digits.";
             return RedirectToAction(nameof(Details), new { id = command.AccountIdFrom });
         }
 

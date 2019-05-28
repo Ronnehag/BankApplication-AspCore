@@ -80,7 +80,7 @@ namespace Bank.Application.Accounts.Commands.CreateAccountTransfer
             return new BaseResult
             {
                 IsSuccess = true,
-                Success = $"Successfully transfered {request.Amount.ToSwedishKrona()} to account #{request.AccountIdTo}."
+                Success = $"Successfully transfered {request.Amount.ToSwedishKrona()} from #{request.AccountIdFrom} to #{request.AccountIdTo}."
             };
         }
     }

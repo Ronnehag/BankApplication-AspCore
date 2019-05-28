@@ -82,7 +82,7 @@ namespace Bank.WebUI.Controllers
                     TempData["Message"] = $"Successfully created the user {model.Command.Email}";
                     return RedirectToAction(nameof(Register));
                 }
-                TempData["Message"] = $"An Error has occured while creating the user {model.Command.Email}, try using a new email or password.";
+                TempData["Error"] = $"An Error has occured while creating the user {model.Command.Email}, try using a new email or password.";
             }
             return View(model);
         }

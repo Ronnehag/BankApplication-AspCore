@@ -9,6 +9,7 @@ namespace Bank.Application.Transactions.Queries
         public string Operation { get; set; }
         public string Amount { get; set; }
         public string Balance { get; set; }
+        public string Symbol { get; set; }
 
         public string Value { get; set; }
     }

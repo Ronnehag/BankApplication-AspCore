@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using Bank.Application.Bank.Queries.GetBankStatistics;
 using Bank.Application.Customers.Commands.CreateCustomer;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +45,7 @@ namespace Bank.WebUI
 
             services.AddTransient<IDateTime, MachineDateTime>();
 
-            // Setting up the DB context using SqlServer
+            // Setting up the DB context using SqlServer, Production gets the key from Azure dependencys
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
             {
                 services.AddDbContext<BankAppDataContext>(options =>
@@ -58,6 +60,7 @@ namespace Bank.WebUI
             // Adding scoped context
             services.AddScoped(typeof(IBankDbContext), typeof(BankAppDataContext));
 
+            // Adding Identity
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<BankAppDataContext>()
                 .AddDefaultTokenProviders();
@@ -112,6 +115,7 @@ namespace Bank.WebUI
                     };
                 });
 
+            // Setting redirect paths
             services.ConfigureApplicationCookie(opt =>
             {
                 opt.LoginPath = "/User/Login";
@@ -141,6 +145,19 @@ namespace Bank.WebUI
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("sv-SE")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("sv-SE"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseMvc(routes =>
             {

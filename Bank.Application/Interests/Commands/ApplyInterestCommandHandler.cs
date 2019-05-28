@@ -43,6 +43,7 @@ namespace Bank.Application.Interests.Commands
                     Date = _time.Now,
                     Amount = totalInterestSum,
                     Operation = Operation.Credit,
+                    Symbol = Interest.Symbol
                 };
                 _context.Accounts.Update(account);
                 _context.Transactions.Add(transaction);

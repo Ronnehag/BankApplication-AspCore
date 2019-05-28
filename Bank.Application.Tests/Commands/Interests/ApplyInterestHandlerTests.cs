@@ -15,14 +15,14 @@ namespace Bank.Application.Tests.Commands.Interests
     public class ApplyInterestHandlerTests
     {
         /* Calculation Used, Example:
-        * Balance: 10000
+        * Balance: 100000
         * Interest: 5%
         * Days a year: 360
         * Timespan: 60 days
         *
-        * (10000 * (5 / 100) / 360) * 60 + 10000
-        * Rounded to 2 decimals.
-        * Answer: 10083.33
+        * (100000 * (5 / 100) / 360) * 60 + 100000
+        * ~Rounded to 2 decimals.
+        * Answer: 100833.33
         */
 
         [Fact(DisplayName = "Interest_ApplyInterest_CalculatedCorrectly")]
@@ -33,14 +33,13 @@ namespace Bank.Application.Tests.Commands.Interests
             var mockDateTime = new MockDateTime { Now = DateTime.Today.AddDays(60).Date };
             var lastCalculatedDate = DateTime.Today.Date;
             var account = context.Accounts.Single(a => a.AccountId == 5);
-            var endValue = Math.Round((account.Balance.Value * (Interest.Rate / 100) / Interest.DaysAYear) *
-                                              (mockDateTime.Now - lastCalculatedDate).Days, 2) + account.Balance.Value;
+
             // Act
             var sut = new ApplyInterestCommandHandler(context, mockDateTime);
-            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = Interest.Rate, LastCalculatedDate = lastCalculatedDate }, CancellationToken.None);
+            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = 5, LastCalculatedDate = lastCalculatedDate }, CancellationToken.None);
 
             // Assert
-            account.Balance.ShouldBe(endValue);
+            account.Balance.ShouldBe(100833.33m);
         }
 
         [Fact(DisplayName = "Interest_ApplyInterest_CreatesValidTransaction")]
@@ -51,23 +50,21 @@ namespace Bank.Application.Tests.Commands.Interests
             var mockDateTime = new MockDateTime { Now = DateTime.Today.AddDays(600).Date };
             var lastCalculatedDate = DateTime.Today.Date;
             var account = context.Accounts.Single(a => a.AccountId == 5);
-            var transactionValue = Math.Round((account.Balance.Value * (Interest.Rate / 100) / Interest.DaysAYear) *
-                                      (mockDateTime.Now - lastCalculatedDate).Days, 2);
-            var endValue = transactionValue + account.Balance.Value;
 
             // Act
             var sut = new ApplyInterestCommandHandler(context, mockDateTime);
-            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = Interest.Rate, LastCalculatedDate = lastCalculatedDate }, CancellationToken.None);
+            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = 5, LastCalculatedDate = lastCalculatedDate }, CancellationToken.None);
 
             // Assert
             account.Transactions.Count.ShouldBe(1);
             var transaction = context.Transactions.Single(t => t.AccountId == 5);
-            transaction.Balance.ShouldBe(endValue);
-            transaction.Amount.ShouldBe(transactionValue);
+            transaction.Balance.ShouldBe(108333.33m);
+            transaction.Amount.ShouldBe(8333.33m);
             transaction.AccountId.ShouldBe(5);
             transaction.Date.ShouldBe(mockDateTime.Now);
             transaction.Operation.ShouldBe(Operation.Credit);
             transaction.Type.ShouldBe(TransactionType.Credit);
+            transaction.Symbol.ShouldBe(Interest.Symbol);
         }
 
         [Fact(DisplayName = "Interest_ZeroBalance_ShouldNotApplyInterest")]
@@ -83,7 +80,7 @@ namespace Bank.Application.Tests.Commands.Interests
 
             // Act
             var sut = new ApplyInterestCommandHandler(context, mockDateTime);
-            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = Interest.Rate, LastCalculatedDate = calculatedDate }, CancellationToken.None);
+            await sut.Handle(new ApplyInterestsCommand { AccountId = 5, APR = 5, LastCalculatedDate = calculatedDate }, CancellationToken.None);
 
             // Assert
             account.Balance.ShouldBe(0m);

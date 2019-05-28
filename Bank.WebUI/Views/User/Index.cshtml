@@ -14,7 +14,7 @@
     {
         <partial name="_AlertError" />
     }
-    <h1 class="text-center pb-5">Bank Users</h1>
+    <h1 class="text-center pb-5">Manage bank users</h1>
     <table class="table table-sm w-75 offset-2 text-center">
         <thead>
             <tr>
@@ -36,19 +36,19 @@
                         @if (User.Identity.Name != user.Email && User.HasClaim(Claims.Admin, "true"))
                         {
                             <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#claim-@user.Id">
-                                Change Role
+                                <i class="fas fa-user-tag"></i> Change Role
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#edit-@user.Id">
-                                Edit
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#edit-@user.Id">
+                                <i class="fas fa-user-edit"></i> Edit
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#delete-@user.Id">
-                                Delete
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#delete-@user.Id">
+                                <i class="fas fa-user-minus"></i> Delete
                             </button>
                         }
                         else
                         {
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#edit-@user.Id">
-                                Edit
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#edit-@user.Id">
+                                <i class="fas fa-user-edit"></i> Edit
                             </button>
                         }
                     </td>
